@@ -1,7 +1,7 @@
 # X3 Jelly Bean Play Store Fix
 
 [Xposed](http://repo.xposed.info/) module that fixes Google Play Store 4.9.13
-crash on
+crash on Android Jelly Bean 4.1.2 on
 [LG Optimus 4X HD (P880)](http://forum.xda-developers.com/optimus-4x-hd) when
 tapping on the "hamburger" button at top left corner.
 
