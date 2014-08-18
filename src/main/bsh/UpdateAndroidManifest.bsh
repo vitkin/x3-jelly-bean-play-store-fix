@@ -1,0 +1,110 @@
+import org.jdom2.Attribute;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
+
+import org.jdom2.input.SAXBuilder;
+
+import org.jdom2.output.Format;
+import org.jdom2.output.LineSeparator;
+import org.jdom2.output.XMLOutputter;
+import org.jdom2.output.support.AbstractXMLOutputProcessor;
+import org.jdom2.output.support.XMLOutputProcessor;
+import org.jdom2.output.support.FormatStack;
+
+import org.jdom2.util.NamespaceStack;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Writer;
+
+String file = project.getBasedir() + "/AndroidManifest.xml";
+print("[INFO] Updating " + file);
+FileInputStream fis = new FileInputStream(file);
+Document doc = new SAXBuilder().build(fis);
+fis.close();
+Element manifest = doc.getRootElement();
+Namespace ns = manifest.getNamespace("android");
+Attribute versionName = manifest.getAttribute("versionName", ns);
+versionName.setValue(project.getVersion());
+Format f = Format.getPrettyFormat();
+f.setLineSeparator(LineSeparator.UNIX);
+
+XMLOutputProcessor xop =  new AbstractXMLOutputProcessor()
+  {
+    boolean firstAttribute;
+    String attributeIndent;
+    
+    protected void printElement(Writer out,
+                                FormatStack fstack,
+                                NamespaceStack nstack,
+                                Element element) throws IOException
+    {
+      firstAttribute = true;
+
+      int elementNameWithPrefixLength = element.getNamespacePrefix().length() + 
+        element.getName().length() + 2;
+
+      StringBuilder sb = new StringBuilder(fstack.getLevelIndent());
+
+      for (int i = 0; i < elementNameWithPrefixLength; i++)
+      {
+        sb.append(' ');
+      }
+
+      attributeIndent = sb.toString();
+
+      super.printElement(out, fstack, nstack, element);
+    }
+
+    
+    protected void printNamespace(Writer out,
+                                  FormatStack fstack,
+                                  Namespace ns) throws IOException
+    {
+      super.printNamespace(out, fstack, ns);
+
+      if (firstAttribute)
+      {
+        firstAttribute = false;
+      }
+    }
+
+    
+    protected void printAttribute(Writer out,
+                                  FormatStack fstack,
+                                  Attribute attribute) throws IOException
+    {
+      {
+        if (!attribute.isSpecified() && fstack.isSpecifiedAttributesOnly())
+        {
+          return;
+        }
+
+        if (firstAttribute)
+        {
+          firstAttribute = false;
+          write(out, " ");
+        }
+        else
+        {
+          write(out, fstack.getLineSeparator());
+          write(out, attributeIndent);
+        }
+
+        write(out, attribute.getQualifiedName());
+        write(out, "=");
+
+        write(out, "\"");
+        attributeEscapedEntitiesFilter(out, fstack, attribute.getValue());
+        write(out, "\"");
+      }
+    }
+  };
+
+XMLOutputter xo = new XMLOutputter(f, xop);
+FileOutputStream fos = new FileOutputStream(file);
+xo.output(doc, fos);
+fos.close();

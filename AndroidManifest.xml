@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="vitkin.android.xposed.jellybeanfixes"
+          android:versionCode="1"
+          android:versionName="1.0-SNAPSHOT">
+  <uses-sdk android:minSdkVersion="8"
+            android:targetSdkVersion="19" />
+  <application android:allowBackup="true"
+               android:icon="@drawable/ic_launcher"
+               android:label="@string/app_name">
+    <meta-data android:name="xposedmodule"
+               android:value="true" />
+    <meta-data android:name="xposeddescription"
+               android:value="Fix Google Play Store 4.9.13 crash on LG Optimus 4X HD (P880) when tapping on the &quot;hamburger&quot; button at top left corner." />
+    <meta-data android:name="xposedminversion"
+               android:value="54" />
+  </application>
+</manifest>
