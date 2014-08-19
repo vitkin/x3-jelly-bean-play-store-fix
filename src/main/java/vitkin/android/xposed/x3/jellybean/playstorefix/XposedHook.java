@@ -1,6 +1,6 @@
 /*
  * #%L
- * X3 Jelly Bean Play Store Fix
+ * LG Optimus Jelly Bean Play Store Fix
  * %%
  * Copyright (C) 2014 Victor Itkin
  * %%

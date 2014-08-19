@@ -1,9 +1,12 @@
-# X3 Jelly Bean Play Store Fix
+# LG Optimus Jelly Bean Play Store Fix
 
 [Xposed](http://repo.xposed.info/) module that fixes Google Play Store 4.9.13
-crash on
+crash on Android Jelly Bean 4.1.2 on
 [LG Optimus 4X HD (P880)](http://forum.xda-developers.com/optimus-4x-hd) when
 tapping on the "hamburger" button at top left corner.
+
+This Fix should work for any other Android phone model from any other vendor
+than LG and the Optimus series.
 
 ## Additional Information
 
@@ -40,7 +43,7 @@ E/AndroidRuntime(15097): at dalvik.system.NativeStart.main(Native Method)
 W/ActivityManager( 415): Force finishing activity com.android.vending/.AssetBrowserActivity
 ```
 
-## Additional Information
+## Root Cause
 
 The error is due to the resource that contains the menu item condensed title
 "Applis" which obviously includes some special characters that make the native
@@ -56,6 +59,7 @@ condensed title before the call to
 
 This project is based on Maven and refers to the `XposedBridgeApi-54.jar` as an
 artifact.
+
 By the time of writing those lines AFAIK that artifact is not available from any
 public Maven repository. Therefore you'll need to add it manually to your local
 Maven repository as follow:
@@ -63,11 +67,10 @@ Maven repository as follow:
 1. Download `XposedBridgeApi-54.jar` from the
 [XDA Forum Thread](http://forum.xda-developers.com/showpost.php?p=51828909&postcount=1).
 
-2. Place it under your local Maven repository in the following folder:
-    * Windows:
-      `%USERPROFILE%\.m2\repository\de\robv\android\xposed\XposedBridgeApi\54`
-
-    * UNIX/Linux:
+2. Place it under your local Maven repository in the following folder:  
+    * Windows:  
+      `%USERPROFILE%\.m2\repository\de\robv\android\xposed\XposedBridgeApi\54`  
+    * UNIX/Linux:  
       `~/.m2/repository/de/robv/android/xposed/XposedBridgeApi/54`
 
 3. Create in that folder a `XposedBridgeApi-54.pom` file with the following content:
